@@ -3,6 +3,9 @@
 @using BlazorBasicsServer.Data
 @inject IDataDemo Db
 
+@using Microsoft.Extensions.Logging
+@inject ILogger<Index> logger
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -17,3 +20,14 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <p>Random number: @Db.GetAge()</p>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var id = 23;
+        logger.LogInformation($"Opening principal page for id: {id}");
+    }
+}
