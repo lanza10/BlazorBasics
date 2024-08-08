@@ -1,5 +1,8 @@
 ﻿@page "/"
 
+@using BlazorBasicsServer.Data
+@inject IDataDemo Db
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -12,3 +15,5 @@ Welcome to your new app.
     </div>
 </div>
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<p>Random number: @Db.GetAge()</p>

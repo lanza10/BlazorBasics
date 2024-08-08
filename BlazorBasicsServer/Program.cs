@@ -7,7 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddTransient<WeatherForecastService>();
+
+// Add dependency injection:
+//  -(singleton only gives one for execution)
+//  -(scoped gives one new for each session)
+//  -(transient gives one new each time is called)
+builder.Services.AddTransient<IDataDemo, DataDemo>();
 
 var app = builder.Build();
 
