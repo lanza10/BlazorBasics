@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+	  <UserSecretsId>5eacf892-1156-41ad-8a87-39b2a14df629</UserSecretsId>
   </PropertyGroup>
 
 </Project>

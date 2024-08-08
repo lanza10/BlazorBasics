@@ -13,6 +13,18 @@ using Microsoft.AspNetCore.Components.Web;
  * Critical: critical errors that can 
  */
 
+
+//Levels of configuration files
+
+/*
+ * app.settings.json
+   app.settings.<environment>.json
+   App secrets (secrets.json) - Only development mode -> ruta : %APPDATA%\Microsoft\UserSecrets (or right click on project -> Manage user secrets)
+   Environment Variables
+   CMD
+ * Azure Key Vaults
+ */
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
