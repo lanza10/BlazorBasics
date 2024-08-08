@@ -17,7 +17,6 @@ namespace BlazorBasicsServer.Data
         public Task<WeatherForecast[]> GetForecastAsync(DateOnly startDate)
         {
             //Dependency injection
-            var rnd = new Random();
             var maxNum = _db.GetAge();
 
             return Task.FromResult(Enumerable.Range(1, maxNum).Select(index => new WeatherForecast

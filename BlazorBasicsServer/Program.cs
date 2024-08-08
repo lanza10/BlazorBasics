@@ -2,6 +2,17 @@ using BlazorBasicsServer.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
+//Types of loggers (by default is Information):
+
+/* 
+ * Trace: Specific and detailed info, useful for intensive debug.
+   Debug: Debug info that may be useful during development.
+   Information: info messages about the correct working of the app.
+   Warning: warnings about situations that could evolve into errors in the future
+   Error: no critic errors that does not prevent the normal working of the app
+ * Critical: critical errors that can 
+ */
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
