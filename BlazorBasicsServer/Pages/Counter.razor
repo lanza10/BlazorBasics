@@ -1,18 +1,27 @@
 ﻿@page "/counter"
+@page "/counter/{initialValue:int}"
+@using System.Transactions
 
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p role="status">Current count: @_currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
+    [Parameter]
+    public int InitialValue { get; set; }
+    private int _currentCount = 0;
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _currentCount = InitialValue;
+    }
     private void IncrementCount()
     {
-        currentCount++;
+        _currentCount++;
     }
 }
