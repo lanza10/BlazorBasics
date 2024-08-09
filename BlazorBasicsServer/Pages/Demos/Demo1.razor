@@ -2,6 +2,29 @@
 
 <h3>Demo 1</h3>
 
-@code {
+<p>
+    web: @_web
+</p>
 
+<p>
+    @a + @b
+</p>
+<p>
+    @(a + b)
+</p>
+
+@*For multiple lines*@
+@{
+    var c = a * b;
+}
+
+@c
+
+@*String to html (be careful with this)*@
+@((MarkupString)"<h1>Title</h1>")
+
+@code {
+    private readonly string _web = "www.semicrol.com";
+    private int a = 5;
+    private int b = 9;
 }
