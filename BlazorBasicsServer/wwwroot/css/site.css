@@ -66,3 +66,7 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.top-row[b-zl818cnhj0] {
+    background-color: rgb(5, 39, 103) !important;
+}
