@@ -6,9 +6,19 @@
 
 <Counter/> *@
 
-@for (var i = 0; i < 4; i++)
+@* @for (var i = 0; i < 4; i++)
 {
     <Counter />
 }
 
-<FetchData/>
+<FetchData/> *@
+
+
+<div class="row">
+    <div class="col-6 bg-secondary">
+        <Counter InitialValue="100" PageHeader="Special Counter" />
+    </div>
+    <div class="col-6 bg-success">
+        <Counter InitialValue="80" PageHeader="Special Counter 2" />
+    </div>
+</div>

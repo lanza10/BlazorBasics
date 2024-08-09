@@ -2,23 +2,35 @@
 @page "/counter"
 @page "/counter/{initialValue:int}"
 
-<PageTitle>Counter</PageTitle>
+@* <PageTitle>Counter</PageTitle> *@
+<h2>@_pageHeader</h2>
 
-<h1 @onmouseover="IncrementCount">Counter</h1>
+<h1 @onmouseover="IncrementCount">Hover Me</h1>
 
 <p role="status">Current count: @_currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+
+    private int _currentCount = 0;
+    private string _pageHeader = "Counter";
+
     [Parameter]
     public int InitialValue { get; set; }
-    private int _currentCount = 0;
+
+    [Parameter]
+    public string? PageHeader { get; set; }
+
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         _currentCount = InitialValue;
+        if (!string.IsNullOrWhiteSpace(PageHeader))
+        {
+            _pageHeader = PageHeader;
+        }
     }
     private void IncrementCount()
     {
