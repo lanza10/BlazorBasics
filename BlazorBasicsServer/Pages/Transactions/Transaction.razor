@@ -1,0 +1,28 @@
+﻿<button class="btn btn-outline-primary mx-2" @onclick="ApprovedTransaction">
+    <span class="oi oi-arrow-circle-top"></span>Approve
+</button>
+<button class="btn btn-outline-success mx-2" @onclick="DeclinedTransaction">
+    <span class="oi oi-arrow-circle-bottom"></span>Decline
+</button>
+
+@code {
+    /*
+     * On Blazor, EventCallback is a special structure that is used to manage component's events and
+     * allow communication between parent and child components. Simplifies the notification and actions of execution
+     * as response to specific component events
+     *
+     * Is similar to a C# delegate and is used to represent a method that can be invoiced when an event is triggered
+     * on a component. Blazor managed automatically the state refreshing and the rendering when an EventCallback is invoiced
+     */
+    [Parameter] public EventCallback<string> OnTransaction { get; set; }
+
+    private void ApprovedTransaction()
+    {
+        OnTransaction.InvokeAsync("Approved");
+    }
+
+    private void DeclinedTransaction()
+    {
+        OnTransaction.InvokeAsync("Declined");
+    }
+}

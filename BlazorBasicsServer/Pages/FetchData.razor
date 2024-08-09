@@ -4,11 +4,16 @@
 @using BlazorBasicsServer.Data
 @inject WeatherForecastService ForecastService
 
+@using BlazorBasicsServer.Pages.Transactions
+
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
+
+@*Events*@
+<Transaction OnTransaction="OnTransactionManager"></Transaction>
 
 @if (forecasts == null)
 {
@@ -16,7 +21,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table @fondoCss">
         <thead>
             <tr>
                 <th>Date</th>
@@ -42,8 +47,27 @@ else
 @code {
     private WeatherForecast[]? forecasts;
 
+    //Events
+    public string fondoCss = "";
+
     protected override async Task OnInitializedAsync()
     {
         forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+    }
+
+    //Events
+    private void OnTransactionManager(string result)
+    {
+        switch (result)
+        {
+            case "Approved":
+                fondoCss = "bg-success";
+                break;
+            case "Declined":
+                fondoCss = "bg-danger";
+                break;
+            default:
+                break;
+        }
     }
 }

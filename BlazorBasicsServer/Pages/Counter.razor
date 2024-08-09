@@ -2,6 +2,8 @@
 @page "/counter"
 @page "/counter/{initialValue:int}"
 
+@using BlazorBasicsServer.Pages.Transactions
+
 @* <PageTitle>Counter</PageTitle> *@
 <h2>@_pageHeader</h2>
 
@@ -11,10 +13,36 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+@*Events*@
+@if (_approvedTransaction)
+{
+    <h3 class="text-warning">The transaction has been approved</h3>
+}
+
+@if (_declinedTransaction)
+{
+    <h3 class="text-danger">The transaction has been declined</h3>
+}
+
+@if (!_approvedTransaction && !_declinedTransaction)
+{
+    <div class="row">
+        <div class="col-12">
+            <Transaction OnTransaction="OnTransactionManager"></Transaction>
+        </div>
+    </div>
+}
+
+
+
 @code {
 
     private int _currentCount = 0;
     private string _pageHeader = "Counter";
+
+    //Events
+    private bool _approvedTransaction = false;
+    private bool _declinedTransaction = false;
 
     [Parameter]
     public int InitialValue { get; set; }
@@ -35,5 +63,21 @@
     private void IncrementCount()
     {
         _currentCount++;
+    }
+
+    //Events
+    private void OnTransactionManager(string result)
+    {
+        switch (result)
+        {
+            case "Approved":
+                _approvedTransaction = true;
+                break;
+            case "Declined":
+                _declinedTransaction = true;
+                break;
+            default:
+                break;
+        }
     }
 }
