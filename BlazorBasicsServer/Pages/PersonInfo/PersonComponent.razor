@@ -1,0 +1,12 @@
+﻿
+
+<h3>@Name @LastName</h3>
+
+@AddressesFragment
+
+@code {
+    [Parameter] public string Name { get; set; }
+    [Parameter] public string LastName { get; set; }
+
+    [Parameter] public RenderFragment AddressesFragment { get; set; }
+}
