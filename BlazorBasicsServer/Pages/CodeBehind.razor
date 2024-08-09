@@ -1,0 +1,12 @@
+﻿@page "/code-behind"
+
+<h3>Code Behind</h3>
+
+<button class="btn btn-primary" @onclick="ToggleMessage">Toggle Message</button>
+
+@if (_showMessage)
+{
+    <p>This is a message</p>
+}
+@code {
+}
