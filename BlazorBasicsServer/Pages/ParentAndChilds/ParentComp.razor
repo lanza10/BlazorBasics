@@ -10,9 +10,19 @@
 
 </ChildComp> *@
 
-<ChildComp OnClickManager="ShowMessage"></ChildComp>
-
+@* <ChildComp OnClickManager="ShowMessage"></ChildComp>
+ *@
 <h5>@_message</h5>
+@* 
+<ChildComp Message="Message from Parent Component to first child" SecondChildComponentMessage="Message from Parent to Second Child"></ChildComp> *@
+
+<ChildComp 
+    Message="Message from Parent Component to first child" 
+    OnClickManager="ShowMessage" 
+    SecondChildComponentMessage="Message from Parent to Second Child">
+        <ChildContent>RenderFragment sent from Parent</ChildContent>
+        <SecondChildContent>Second RenderFragment sent from Parent</SecondChildContent>
+</ChildComp>
 
 @code {
     private string _message = "";

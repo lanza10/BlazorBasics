@@ -20,6 +20,8 @@
         }
         
         <button class="btn btn-success" @onclick="OnClickManager">Click Button</button>
+        
+        <SecondChildComp SecondChildComponentMessage=@SecondChildComponentMessage></SecondChildComp>
     </div>
 </div>
 
@@ -36,4 +38,7 @@
     //EventCallBack method
     [Parameter]
     public EventCallback<MouseEventArgs> OnClickManager { get; set; }
+
+    [Parameter]
+    public string SecondChildComponentMessage { get; set; }
 }
