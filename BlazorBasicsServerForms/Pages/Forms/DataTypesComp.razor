@@ -1,0 +1,29 @@
+﻿@page "/data-types"
+
+<h3>Data Types</h3>
+
+<EditForm Model="@_dataTypes">
+    <InputText @bind-Value="_dataTypes.StringProp"></InputText>
+    <br/>
+    <InputText @bind-Value="_dataTypes.PasswordProp" type="password"></InputText>
+    <br />
+    <InputNumber @bind-Value="_dataTypes.IntProp"></InputNumber>
+    <br />
+    <InputNumber @bind-Value="_dataTypes.DoubleProp"></InputNumber>
+    <br />
+    <InputCheckbox @bind-Value="_dataTypes.BoolProp"></InputCheckbox>
+    <br />
+    <InputDate @bind-Value="_dataTypes.DateTimeProp"></InputDate>
+    <br />
+    <InputSelect @bind-Value="_dataTypes.DropdownListProp">
+        <option value="">--Select option--</option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+        <option value="3">Option 3</option>
+        <option value="4">Option 4</option>
+    </InputSelect>
+</EditForm>
+
+@code {
+    private readonly DataTypes _dataTypes = new DataTypes();
+}
