@@ -1,0 +1,37 @@
+﻿@page "/file-upload"
+
+<h3>File Upload</h3>
+
+<InputFile OnChange="@OnFileManager"></InputFile>
+
+@if (_file != null)
+{
+    <p>File Name: @_file.Name</p>
+    <p>File Type: @_file.ContentType</p>
+    <p>@_uploadMessage</p>
+}
+@code {
+    private IBrowserFile _file;
+    private string _uploadMessage = "";
+
+    private async Task OnFileManager(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            _file = e.File;
+            if (_file != null)
+            {
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/files");
+                var filePath = Path.Combine(folderPath, _file.Name);
+                await using var fileStream = new FileStream(filePath, FileMode.Create);
+                await _file.OpenReadStream().CopyToAsync(fileStream);
+                _uploadMessage = "File uploaded correctly";
+            }
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = "Error uploading file " + ex;
+        }
+    }
+
+}
