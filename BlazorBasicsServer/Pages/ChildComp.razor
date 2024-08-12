@@ -18,6 +18,8 @@
         {
             <h4 class="alert alert-primary">No second content given</h4>
         }
+        
+        <button class="btn btn-success" @onclick="OnClickManager">Click Button</button>
     </div>
 </div>
 
@@ -30,4 +32,8 @@
 
     [Parameter]
     public RenderFragment SecondChildContent { get; set; }
+
+    //EventCallBack method
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickManager { get; set; }
 }
