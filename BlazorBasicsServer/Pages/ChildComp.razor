@@ -1,0 +1,33 @@
+﻿
+<div class="row">
+    <div class="col-6 offset-3">
+        <h3 class="alert alert-success">@Message</h3>
+        @if (ChildContent != null)
+        {
+            <h4 class="alert alert-primary">@ChildContent</h4>
+        }
+        else
+        {
+            <h4 class="alert alert-primary">No content given</h4>
+        }
+        @if (SecondChildContent != null)
+        {
+            <h4 class="alert alert-primary">@SecondChildContent</h4>
+        }
+        else
+        {
+            <h4 class="alert alert-primary">No second content given</h4>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public  string Message { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment SecondChildContent { get; set; }
+}
