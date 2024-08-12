@@ -1,0 +1,80 @@
+﻿@page "/cascade-selector"
+
+<h1>Cascade Selector</h1>
+
+<EditForm Model="_cascadeSelector">
+    <select @onchange="OnDropDownItemsManager">
+        <option value="">--Select item--</option>
+        @foreach (var item in _items)
+        {
+            <option value="@item.Key">@item.Value</option>
+        }
+    </select>
+    @if (_subItems.Count > 0)
+    {
+        <select @onchange="OnDropDownSubItemsManager">
+            @foreach (var subItem in _subItems)
+            {
+                <option value="@subItem.Key">@subItem.Value</option>
+            }
+        </select>
+    }
+</EditForm>
+
+
+@code {
+    private readonly CascadeSelector _cascadeSelector = new();
+
+    private readonly Dictionary<int, string> _items = new Dictionary<int, string>();
+    private Dictionary<int, string> _subItems = new Dictionary<int, string>();
+
+    public CascadeSelectorComp()
+    {
+        _items.Add(1,"Clothes");
+        _items.Add(2,"Technology");
+        _items.Add(3,"Food");
+    }
+
+    public void OnDropDownItemsManager(ChangeEventArgs e)
+    {
+        _subItems = new Dictionary<int, string>();
+        if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+        {
+            _cascadeSelector.Selector1 = 0;
+            _cascadeSelector.Selector2 = 0;
+            return;
+        }
+
+        _cascadeSelector.Selector1 = int.Parse(e.Value.ToString()!);
+        switch (_cascadeSelector.Selector1)
+        {
+            case 1:
+                _subItems.Add(1, "Jeans");
+                _subItems.Add(2, "Shoes");
+                _subItems.Add(3, "T-shirts");
+                break;
+            case 2:
+                _subItems.Add(4, "Consoles");
+                _subItems.Add(5, "Phones");
+                _subItems.Add(6, "Computers");
+                break;
+            case 3:
+                _subItems.Add(7, "Vegetables");
+                _subItems.Add(8, "Meat");
+                _subItems.Add(9, "Fish");
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    public void OnDropDownSubItemsManager(ChangeEventArgs e)
+    {
+            if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+            {
+                return;
+            }
+        _cascadeSelector.Selector2 = int.Parse(e.Value.ToString()!);
+    }
+}
