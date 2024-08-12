@@ -2,24 +2,60 @@
 
 <h3>Form</h3>
 
-<p>Name: @_product.Name</p>
-<p>Description: @_product.Description</p>
-
 <EditForm Model="_product" OnValidSubmit="OnSubmitManager">
-    <InputText id="name" @bind-Value="_product.Name"></InputText>
-    <InputText id="description" @bind-Value="_product.Description"></InputText>
+    @*Validation Tags*@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <p>
+        <label>
+            Name:
+        </label>
+        <InputText id="name" @bind-Value="_product.Name"></InputText>
+    </p>
+    <p>
+        <label>
+            Description:
+        </label>
+        <InputText id="description" @bind-Value="_product.Description"></InputText>
+    </p>
+
+    <p>
+        <label>
+            Amount:
+        </label>
+        <InputNumber id="amount" @bind-Value="_product.Amount"></InputNumber>
+    </p>
+
+    <p>
+        <label>
+            Active:
+        </label>
+        <InputCheckbox id="active" @bind-Value="_product.Active"></InputCheckbox>
+    </p>
+
     <button class="btn btn-success" type="submit">Send</button>
 </EditForm>
 
 <hr/>
 <h4>@_result</h4>
+<br/>
+<p>Name: @_product.Name</p>
+<p>Description: @_product.Description</p>
+<p>Amount: @_product.Amount</p>
+<p>Active: @_product.Active</p>
+
 
 @code {
     private Product _product = new Product();
     private string _result = "";
 
+    // private void OnSubmitManager()
+    // {
+    //     _result = $"{_product.Name} {_product.Description}";
+    // }
     private void OnSubmitManager()
     {
-        _result = $"{_product.Name} {_product.Description}";
+        _result = $"Product created: {_product.Name} {_product.Description}";
+        _product = new Product();
     }
 }
