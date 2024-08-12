@@ -6,15 +6,35 @@
 <p>Active: @_book.Active</p>
 <p>Pages: @_book.Pages</p>
 
-@code {
-    //One-way data binding
+@*To prove that is one way data binding*@
+<p>ONE WAY</p>
+<input type="number" value="@_book.Pages"/>
 
-    readonly Book _book = new Book()
+@*To prove that is two-way data binding*@
+<p>TWO WAY</p>
+<input type="number" @bind-value="@_book.Pages" @bind-value:event="oninput" />
+<br />
+<br/>
+<input type="checkbox" @bind-value="_book.Active" checked=@_book.Active/> Is Active
+<br />
+<span>This book is: @(_book.Active? "Active" : "Inactive")</span>
+
+
+@code {
+    //One-way data binding -> data is showed on the UI and is automatically updated when is changed on the component
+    //Two-way data binding -> changes made on the UI updates the component data and vice versa
+
+    readonly Book _book = new()
     {
         Id = 1,
         Title = "First Book",
         Active = true,
         Pages = 210
     };
+
+    public string IsActive()
+    {
+        return _book.Active ? "Active" : "Inactive";
+    }
 
 }
