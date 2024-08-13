@@ -1,0 +1,72 @@
+﻿@page "/books"
+@using BlazorCRUD.Models
+@using BlazorCRUD.Repository
+@inject IRepository repo
+
+<h1>CRUD with Blazor Server and MSsqlLocalDB</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-black">
+                    Book List
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Price</th>
+                <th>Creation Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var book in _bookList)
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Title</td>
+                    <td>@book.Description</td>
+                    <td>@book.Author</td>
+                    <td>@book.Pages</td>
+                    <td>@book.Price</td>
+                    <td>@book.CreationDate</td>
+                    <td>
+                        <a href="edit-book/@book.Id" class="btn btn-success btn-sm">
+                            <span class="oi oi-plus" aria-hidden="true"></span>
+                            Edit
+                        </a>
+                        <button @onclick="(() => DeleteBook(book.Id))" class="btn btn-danger btn.sm">
+                            <span class="oi oi-delete" aria-hidden="true"></span>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<Book> _bookList = new List<Book>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookList = await repo.GetBooks();
+    }
+
+    private async Task DeleteBook(int id)
+    {
+        await repo.DeleteBook(id);
+    }
+}

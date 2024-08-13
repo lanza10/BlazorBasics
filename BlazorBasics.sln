@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBasicsServerAuthentic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basics", "Basics", "{C449A218-F1DA-4D67-969D-2A1448A6FF26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCRUD", "BlazorCRUD\BlazorCRUD.csproj", "{B71AE179-D2C2-44D1-8ED5-54C230008605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCRUD", "BlazorCRUD\BlazorCRUD.csproj", "{B71AE179-D2C2-44D1-8ED5-54C230008605}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
