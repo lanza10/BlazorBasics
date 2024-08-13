@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBasicsServerForms", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBasicsServerAuthentication", "BlazorBasicsServerAuthentication\BlazorBasicsServerAuthentication.csproj", "{2D59055B-F0F0-42A4-9848-5CEF71FD3CE4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basics", "Basics", "{C449A218-F1DA-4D67-969D-2A1448A6FF26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCRUD", "BlazorCRUD\BlazorCRUD.csproj", "{B71AE179-D2C2-44D1-8ED5-54C230008605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,19 @@ Global
 		{2D59055B-F0F0-42A4-9848-5CEF71FD3CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D59055B-F0F0-42A4-9848-5CEF71FD3CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D59055B-F0F0-42A4-9848-5CEF71FD3CE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71AE179-D2C2-44D1-8ED5-54C230008605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71AE179-D2C2-44D1-8ED5-54C230008605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71AE179-D2C2-44D1-8ED5-54C230008605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71AE179-D2C2-44D1-8ED5-54C230008605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A953186D-BB1C-4F9D-9DB1-EA7BD7E53B60} = {C449A218-F1DA-4D67-969D-2A1448A6FF26}
+		{247143B2-04E3-4430-8F17-646B94C51DEE} = {C449A218-F1DA-4D67-969D-2A1448A6FF26}
+		{E19408DB-A263-497E-82E3-73C9D28D6BD0} = {C449A218-F1DA-4D67-969D-2A1448A6FF26}
+		{2D59055B-F0F0-42A4-9848-5CEF71FD3CE4} = {C449A218-F1DA-4D67-969D-2A1448A6FF26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDF706B4-A6DC-44C2-AA9B-09C3211390B8}
