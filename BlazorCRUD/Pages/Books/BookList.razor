@@ -45,7 +45,7 @@
                             <span class="oi oi-plus" aria-hidden="true"></span>
                             Edit
                         </a>
-                        <button @onclick="(() => DeleteBook(book.Id))" class="btn btn-danger btn.sm">
+                        <button @onclick="() => DeleteBook(book.Id)" class="btn btn-danger btn.sm">
                             <span class="oi oi-delete" aria-hidden="true"></span>
                             Delete
                         </button>
@@ -68,5 +68,6 @@
     private async Task DeleteBook(int id)
     {
         await repo.DeleteBook(id);
+        await OnInitializedAsync();
     }
 }
