@@ -1,12 +1,22 @@
 ﻿@page "/counter"
 
+@*Next line is for restricting non-authorized users to view this page *@
+@attribute [Authorize]
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <button class="btn btn-primary" @onclick="IncrementCountTwenty">Click me to Increment Twenty</button>
+    </Authorized>
+    <NotAuthorized>
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me to Increment One</button>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private int currentCount = 0;
@@ -14,5 +24,9 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+    private void IncrementCountTwenty()
+    {
+        currentCount += 20;
     }
 }

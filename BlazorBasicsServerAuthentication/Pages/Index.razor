@@ -6,4 +6,16 @@
 
 Welcome to your new app.
 
+<AuthorizeView>
+    <Authorized>
+        <h3>Thank you for logging in</h3>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Please, log in for using this web</h3>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin">
+    <h3>Thank you for logging in as admin</h3>
+</AuthorizeView>
+
 <SurveyPrompt Title="How is Blazor working for you?" />

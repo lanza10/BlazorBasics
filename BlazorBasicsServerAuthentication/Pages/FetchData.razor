@@ -1,4 +1,8 @@
 ﻿@page "/fetchdata"
+
+@*Next line is for restricting non-admin users to view this page *@
+@attribute [Authorize(Roles = "Admin")]
+
 @using BlazorBasicsServerAuthentication.Data
 @inject WeatherForecastService ForecastService
 
