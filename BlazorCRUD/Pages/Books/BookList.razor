@@ -68,6 +68,7 @@
     private async Task DeleteBook(int id)
     {
         await repo.DeleteBook(id);
-        await OnInitializedAsync();
+        //Update bookList
+        _bookList = await repo.GetBooks();
     }
 }
