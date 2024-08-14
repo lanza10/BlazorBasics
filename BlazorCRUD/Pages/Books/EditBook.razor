@@ -1,0 +1,110 @@
+﻿@page "/edit-book/{id:int}"
+@using System.Runtime.CompilerServices
+@using BlazorCRUD.Models
+@using BlazorCRUD.Repository
+@inject IRepository repo
+@inject NavigationManager navigationManager
+
+<h1>CRUD with Blazor Server and MSsqlLocalDB</h1>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-black">
+                    Create New Book
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <EditForm Model="_book" OnValidSubmit="() => HandleUpdateBook()">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="container">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Title: </label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_book.Title" class="form-control" placeholder="Insert Title"></InputText>
+                            <ValidationMessage For="() => _book.Title"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Description: </label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_book.Description" class="form-control" placeholder="Insert Description"></InputText>
+                            <ValidationMessage For="() => _book.Description"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Author: </label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_book.Author" class="form-control" placeholder="Insert Author"></InputText>
+                            <ValidationMessage For="() => _book.Author"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Pages Amount: </label>
+                        </div>
+                        <div class="col-6">
+                            <InputNumber @bind-Value="_book.Pages" class="form-control" placeholder="Insert Amount of Pages"></InputNumber>
+                            <ValidationMessage For="() => _book.Pages"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Price: </label>
+                        </div>
+                        <div class="col-6">
+                            <InputNumber @bind-Value="_book.Price" class="form-control" placeholder="Insert Price"></InputNumber>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success">
+                                <span class="oi oi-cog" aria-hidden="true"></span>
+                                Update
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" @onclick="@(() => navigationManager.NavigateTo("/books"))">
+                                <span class="oi oi-chevron-left" aria-hidden="true"></span>
+                                Go back
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+    private Book _book = new Book();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _book = await repo.GetBookById(Id.Value);
+    }
+
+    public async void HandleUpdateBook()
+    {
+        await repo.UpdateBook(Id.Value, _book);
+        navigationManager.NavigateTo("/books");
+    }
+   
+}
