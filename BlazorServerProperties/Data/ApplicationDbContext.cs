@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BlazorServerProperties.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerProperties.Data
@@ -9,5 +10,8 @@ namespace BlazorServerProperties.Data
             : base(options)
         {
         }
+
+        //Add models
+        public DbSet<Category> Categories { get; set; }
     }
 }
