@@ -16,9 +16,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.15" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\images\" />
-    <Folder Include="wwwroot\css\propertiesImages\" />
-  </ItemGroup>
-
 </Project>
