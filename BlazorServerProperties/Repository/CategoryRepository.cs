@@ -95,11 +95,13 @@ namespace BlazorServerProperties.Repository
         public async Task<int> DeleteCategory(int id)
         {
             var cat = await _db.Categories.FindAsync(id);
-            if (cat != null)
+            if (cat == null)
             {
-               _db.Categories.Remove(cat);
-               return await _db.SaveChangesAsync();
+                return 0;
             }
+            _db.Categories.Remove(cat);
+            return await _db.SaveChangesAsync();
+
         }
     }
 }

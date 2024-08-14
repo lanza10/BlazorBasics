@@ -1,0 +1,70 @@
+﻿@page "/categories"
+
+@using BlazorServerProperties.Models.DTO
+@using Repository.IRepository
+@inject ICategoryRepository  categoryRepository
+
+<h1 class="text-center">Categories</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h4 class="card-title text-dark">Category List</h4>
+            </div>
+            <div class="col-3 offset-2">
+                <NavLink href="create-category" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp; New Category</NavLink>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (CategoriesDto.Any())
+            {
+                @foreach (var cat in CategoriesDto)
+                {
+                    <tr>
+                        <td>@cat.Id</td>
+                        <td>@cat.CategoryName</td>
+                        <td>@cat.Description</td>
+                        <td>
+                            <NavLink href="@($"edit-category/{cat.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="() => HandleDeleteCategory(cat.Id)"><i class="bi bi-trash-fill"></i>&nbsp; Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">There are no categories</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<CategoryDTO> CategoriesDto { get; set; } = new List<CategoryDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        CategoriesDto = await categoryRepository.GetAllCategory();
+    }
+
+    public async void HandleDeleteCategory(int id)
+    { 
+        await categoryRepository.DeleteCategory(id);
+        CategoriesDto = await categoryRepository.GetAllCategory();
+    }
+}

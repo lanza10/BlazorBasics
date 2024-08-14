@@ -1,0 +1,78 @@
+﻿@page "/create-category"
+
+@using BlazorServerProperties.Models.DTO
+@using Repository.IRepository
+@inject ICategoryRepository CatRepo
+@inject NavigationManager NavManager
+
+<h1 class="text-center">Categories</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h2 class="text-dark">New category</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <EditForm Model="Category" OnValidSubmit="() => HandleCreateCategory()">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <ValidationSummary></ValidationSummary>
+            <div class="container">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Name: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputText @bind-Value="Category.CategoryName" class="form-control" placeholder="Insert Category Name"></InputText>
+                            <ValidationMessage For="() => Category.CategoryName"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Description: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputText @bind-Value="Category.Description" class="form-control" placeholder="Insert Category Description"></InputText>
+                            <ValidationMessage For="() => Category.Description"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle-fill"></i>&nbsp;
+                                Create
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo("/categories"))">
+                                <i class="bi bi-arrow-left-circle-fill"></i>&nbsp;
+                                Go back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+        
+    </div>
+</div>
+
+@code {
+    private CategoryDTO Category { get; set; } = new CategoryDTO();
+
+    public async Task HandleCreateCategory()
+    {
+        var catName = await CatRepo.ExistCategoryName(Category.CategoryName);
+        if(catName != null)
+        {
+            return;
+        }
+        await CatRepo.CreateCategory(Category);
+        NavManager.NavigateTo("/categories");
+    }
+}
