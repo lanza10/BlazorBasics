@@ -4,7 +4,6 @@ namespace BlazorServerProperties.Models.DTO
 {
     public class PropertyDTO 
     {
-        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "The name is mandatory")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "Name length must be between 5 and 30 chars")]
@@ -30,5 +29,7 @@ namespace BlazorServerProperties.Models.DTO
         public bool Active { get; set; }
 
         public int CategoryId { get; set; }
+        public virtual ICollection<PropertyImage> propertyImages { get; set; }
+        public List<string> imagesUrl { get; set; }
     }
 }

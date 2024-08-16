@@ -12,6 +12,7 @@ namespace BlazorServerProperties.Mapper
             CreateMap<Category, CategoryDTO>();
             CreateMap<Property, PropertyDTO>().ReverseMap();
             CreateMap<Category, DropDownCategoryDTO>().ReverseMap();
+            CreateMap<PropertyImage, PropertyImageDTO>().ReverseMap();
         }
     }
 }

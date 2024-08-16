@@ -1,11 +1,13 @@
 ﻿@page "/create-PROPERTY"
 
 @using BlazorServerProperties.Models.DTO
+@using BlazorServerProperties.Services
 @using Repository.IRepository
 @inject IPropertyRepository PropRepo
 @inject ICategoryRepository CatRepo
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
+@inject IFileUpload FileUpload
 
 <h1 class="text-center">Properties</h1>
 
@@ -118,7 +120,15 @@
                         </div>
                     </div>
                     <br />
-                    <div class="row">
+                    <div class="form-group" style="padding-top:30px; padding-bottom:30px;">
+                        <hr/>
+                        <h4>Property Images</h4>
+                        <InputFile OnChange="HandleFileUpload" multiple></InputFile>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                    <div class="row"> 
                         <div class="col-2">
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-plus-circle-fill"></i>&nbsp;
@@ -142,6 +152,7 @@
 @code {
     private PropertyDTO Property { get; set; } = new PropertyDTO();
     private DropDownCategoryDTO _selectedCategory = new DropDownCategoryDTO();
+    public bool FileUploadHasStarted { get; set; } = false;
 
     //Obtain categoryList into dropDown
     private IEnumerable<DropDownCategoryDTO> DropDownCategoryDto { get; set; } = new List<DropDownCategoryDTO>();
@@ -163,5 +174,56 @@
         await PropRepo.CreateProperty(Property);
         await JsRuntime.ToastrSuccess("Property created successfully");
         NavManager.NavigateTo("/properties");
+    }
+
+    public async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        FileUploadHasStarted = true;
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Any())
+            {
+                foreach (var file in e.GetMultipleFiles())
+                {
+                    var fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg"
+                        || fileInfo.Extension.ToLower() == ".png"
+                        || fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        var uploadedImagePath = await FileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await JsRuntime.ToastrError("Only .png , .jpg and .jpeg extensions are allowed");
+                        return;
+                    }
+                }
+
+                if (images.Any())
+                {
+                    if (Property.imagesUrl == null || !Property.imagesUrl.Any())
+                    {
+                        Property.imagesUrl = new List<string>();
+                    }
+
+                    Property.imagesUrl.AddRange(images);
+                }
+                else
+                {
+                    await JsRuntime.ToastrError("Image upload failed");
+                    return;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            FileUploadHasStarted = false;
+        }
     }
 }
