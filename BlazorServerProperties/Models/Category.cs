@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace BlazorServerProperties.Models
 {
     public class Category
@@ -11,5 +12,7 @@ namespace BlazorServerProperties.Models
         public string Description { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; }
+
+        public virtual ICollection<Property> Properties { get; set; }
     }
 }

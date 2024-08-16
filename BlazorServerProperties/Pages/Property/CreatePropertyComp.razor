@@ -1,0 +1,167 @@
+﻿@page "/create-PROPERTY"
+
+@using BlazorServerProperties.Models.DTO
+@using Repository.IRepository
+@inject IPropertyRepository PropRepo
+@inject ICategoryRepository CatRepo
+@inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
+
+<h1 class="text-center">Properties</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h2 class="text-dark">New property</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <EditForm Model="Property" OnValidSubmit="() => HandleCreateProperty()">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <ValidationSummary></ValidationSummary>
+            <div class="container">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Name: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputText @bind-Value="Property.Name" class="form-control" placeholder="Insert Property Name"></InputText>
+                            <ValidationMessage For="() => Property.Name"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Description: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputText @bind-Value="Property.Description" class="form-control" placeholder="Insert Property Description"></InputText>
+                            <ValidationMessage For="() => Property.Description"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Area: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputNumber @bind-Value="Property.Area" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Property.Area"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Rooms: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputNumber @bind-Value="Property.Rooms" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Property.Rooms"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Bathrooms: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputNumber @bind-Value="Property.Bathrooms" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Property.Bathrooms"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Parking spaces: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputNumber @bind-Value="Property.Parking" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Property.Parking"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Price: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputNumber @bind-Value="Property.Price" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Property.Price"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Is Active: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputCheckbox @bind-Value="Property.Active" class="form-check" ></InputCheckbox>
+                            <ValidationMessage For="() => Property.Active"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Category: </label>
+                        </div>
+                        <div class="col-4">
+                            <InputSelect @bind-Value="_selectedCategory" class="form-control">
+                                <option value="">--Select Category--</option>
+                                @foreach (var cat in DropDownCategoryDto)
+                                {
+                                    <option value="@cat">@cat.CategoryName</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle-fill"></i>&nbsp;
+                                Create
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo("/properties"))">
+                                <i class="bi bi-arrow-left-circle-fill"></i>&nbsp;
+                                Go back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+        
+    </div>
+</div>
+
+@code {
+    private PropertyDTO Property { get; set; } = new PropertyDTO();
+    private DropDownCategoryDTO _selectedCategory = new DropDownCategoryDTO();
+
+    //Obtain categoryList into dropDown
+    private IEnumerable<DropDownCategoryDTO> DropDownCategoryDto { get; set; } = new List<DropDownCategoryDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        DropDownCategoryDto = await CatRepo.GetDropDownCategories();
+    }
+
+
+    public async Task HandleCreateProperty()
+    {
+        var propName = await PropRepo.ExistPropertyName(Property.Name);
+        if(propName != null)
+        {
+            await JsRuntime.ToastrError("That property name already exists");
+            return;
+        }
+        await PropRepo.CreateProperty(Property);
+        await JsRuntime.ToastrSuccess("Property created successfully");
+        NavManager.NavigateTo("/properties");
+    }
+}

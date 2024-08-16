@@ -9,7 +9,7 @@ namespace BlazorServerProperties.Repository.IRepository
         public Task<CategoryDTO> CreateCategory(CategoryDTO category);
         public Task<CategoryDTO> UpdateCategory(int id, CategoryDTO category);
         public Task<CategoryDTO> ExistCategoryName(string name);
-        public Task<int> DeleteCategory(int id);
-        //public Task<IEnumerable<CategoryDTO>> GetDropDownCategories();
+        public Task<int> DeleteCategory(int id); 
+        public Task<IEnumerable<DropDownCategoryDTO>> GetDropDownCategories();
     }
 }

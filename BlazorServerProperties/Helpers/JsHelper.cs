@@ -12,5 +12,13 @@ namespace BlazorServerProperties.Helpers
         {
             await jsRuntime.InvokeVoidAsync("ShowToastr", "error", message);
         }
+        public static async ValueTask SwalSuccess(this IJSRuntime jsRuntime, string message)
+        {
+            await jsRuntime.InvokeVoidAsync("ShowSwal", "success", message);
+        }
+        public static async ValueTask SwalError(this IJSRuntime jsRuntime, string message)
+        {
+            await jsRuntime.InvokeVoidAsync("ShowSwal", "error", message);
+        }
     }
 }

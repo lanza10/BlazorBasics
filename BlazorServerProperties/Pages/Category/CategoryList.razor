@@ -3,6 +3,7 @@
 @using BlazorServerProperties.Models.DTO
 @using Repository.IRepository
 @inject ICategoryRepository  categoryRepository
+@inject IJSRuntime JsRuntime
 
 <h1 class="text-center">Categories</h1>
 
@@ -65,6 +66,7 @@
     public async void HandleDeleteCategory(int id)
     { 
         await categoryRepository.DeleteCategory(id);
+        await JsRuntime.ToastrSuccess("Category deleted successfully");
         CategoriesDto = await categoryRepository.GetAllCategory();
     }
 }

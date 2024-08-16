@@ -4,6 +4,7 @@
 @using Repository.IRepository
 @inject ICategoryRepository CatRepo
 @inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
 
 <h1 class="text-center">Categories</h1>
 
@@ -70,9 +71,11 @@
         var catName = await CatRepo.ExistCategoryName(Category.CategoryName);
         if(catName != null)
         {
+            await JsRuntime.ToastrError("That category name already exists");
             return;
         }
         await CatRepo.CreateCategory(Category);
+        await JsRuntime.ToastrSuccess("Category created successfully");
         NavManager.NavigateTo("/categories");
     }
 }

@@ -103,5 +103,19 @@ namespace BlazorServerProperties.Repository
             return await _db.SaveChangesAsync();
 
         }
+
+        public async Task<IEnumerable<DropDownCategoryDTO>> GetDropDownCategories()
+        {
+            try
+            {
+                var dropDownCategoriesDto =
+                    _mapper.Map<IEnumerable<Category>, IEnumerable<DropDownCategoryDTO>>(_db.Categories);
+                return dropDownCategoriesDto;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

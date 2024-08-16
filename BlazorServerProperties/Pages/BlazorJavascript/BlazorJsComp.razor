@@ -8,10 +8,18 @@
         <button class="btn btn-secondary" @onclick="() => ConfirmationDemo(ConfirmationMessage)">Confirm Button Demo</button>
     </div>
 </div>
+
 <div class="row mt-4">
     <div class="col-4">
         <button class="btn btn-success" @onclick="SuccessDemo">Toastr Success Demo</button>
         <button class="btn btn-danger" @onclick="ErrorDemo">Toastr Error Demo</button>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-4">
+        <button class="btn btn-success" @onclick="SuccessDemoSwal">Swal Success Demo</button>
+        <button class="btn btn-danger" @onclick="ErrorDemoSwal">Swal Error Demo</button>
     </div>
 </div>
 
@@ -36,6 +44,7 @@
         ConfirmResult = await JsRuntime.InvokeAsync<bool>("confirm", m);
     }
 
+    //Toastr
     private async Task SuccessDemo()
     {
         await JsRuntime.ToastrSuccess("Task completed!");
@@ -43,6 +52,16 @@
     private async Task ErrorDemo()
     {
         await JsRuntime.ToastrError("Task failed!");
+    }
+
+    //Sweet alerts
+    private async Task SuccessDemoSwal()
+    {
+        await JsRuntime.SwalSuccess("Task completed!");
+    }
+    private async Task ErrorDemoSwal()
+    {
+        await JsRuntime.SwalError("Task failed!");
     }
 
 }

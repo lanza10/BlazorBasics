@@ -1,0 +1,84 @@
+﻿@page "/properties"
+
+@using Models.DTO
+@using Repository.IRepository
+@inject IPropertyRepository  PropRepo
+@inject IJSRuntime JsRuntime
+
+<h1 class="text-center">Properties</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h4 class="card-title text-dark">Property List</h4>
+            </div>
+            <div class="col-3 offset-2">
+                <NavLink href="create-property" class="btn btn-primary"><i class="bi bi-house-add-fill"></i>&nbsp; New Property</NavLink>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Area</th>
+                <th>Rooms</th>
+                <th>Bathrooms</th>
+                <th>Parking</th>
+                <th>Price</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (PropertiesDto.Any())
+            {
+                    @foreach (var prop in PropertiesDto)
+                {
+                    <tr>
+                        <td>@prop.Id</td>
+                        <td>@prop.Name</td>
+                        <td>@prop.Description</td>
+                        <td>@prop.Area</td>
+                        <td>@prop.Rooms</td>
+                        <td>@prop.Bathrooms</td>
+                        <td>@prop.Parking</td>
+                        <td>@prop.Price</td>
+                        <td>@prop.Active</td>
+                        <td>
+                            <NavLink href="@($"edit-property/{prop.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="() => HandleDeleteProperty(prop.Id)"><i class="bi bi-house-dash-fill"></i>&nbsp; Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">There are no properties</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<PropertyDTO> PropertiesDto { get; set; } = new List<PropertyDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PropertiesDto = await PropRepo.GetAllProperty();
+    }
+
+    public async void HandleDeleteProperty(int id)
+    { 
+        await PropRepo.DeleteProperty(id);
+        await JsRuntime.ToastrSuccess("Property deleted successfully");
+        PropertiesDto = await PropRepo.GetAllProperty();
+    }
+}

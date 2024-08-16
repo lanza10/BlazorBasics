@@ -24,6 +24,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 //Add services
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 
 var app = builder.Build();
 
