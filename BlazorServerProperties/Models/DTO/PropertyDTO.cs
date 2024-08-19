@@ -29,7 +29,7 @@ namespace BlazorServerProperties.Models.DTO
         public bool Active { get; set; }
 
         public int CategoryId { get; set; }
-        public virtual ICollection<PropertyImage> propertyImages { get; set; }
-        public List<string> imagesUrl { get; set; }
+        public virtual ICollection<PropertyImage> Images { get; set; }
+        public List<string> ImagesUrl { get; set; }
     }
 }

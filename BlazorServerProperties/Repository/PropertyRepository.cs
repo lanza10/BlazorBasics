@@ -18,11 +18,23 @@ namespace BlazorServerProperties.Repository
             _mapper = mapper;
         }
         public async Task<IEnumerable<PropertyDTO>> GetAllProperty()
-        {
+        {   //v 1.0
+            //try
+            //{
+            //    var propertiesDto =
+            //        _mapper.Map<IEnumerable<Property>, IEnumerable<PropertyDTO>>(_db.Properties);
+            //    return propertiesDto;
+            //}
+            //catch (Exception ex)
+            //{
+            //    return null;
+            //}
+            //v2.0
             try
             {
                 var propertiesDto =
-                    _mapper.Map<IEnumerable<Property>, IEnumerable<PropertyDTO>>(_db.Properties);
+                    _mapper.Map<IEnumerable<Property>, IEnumerable<PropertyDTO>>(_db.Properties
+                        .Include(x => x.Images));
                 return propertiesDto;
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿@page "/create-property"
+﻿@page "/edit-property/{Id:int}"
 
 @using BlazorServerProperties.Models.DTO
 @using BlazorServerProperties.Services
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="card-body">
-        <EditForm Model="Property" OnValidSubmit="() => HandleCreateProperty()">
+        <EditForm Model="Property" OnValidSubmit="() => HandleEditProperty()">
             <DataAnnotationsValidator></DataAnnotationsValidator>
             <ValidationSummary></ValidationSummary>
             <div class="container">
@@ -101,7 +101,7 @@
                             <label>Is Active: </label>
                         </div>
                         <div class="col-4">
-                            <InputCheckbox @bind-Value="Property.Active" class="form-check" ></InputCheckbox>
+                            <InputCheckbox @bind-Value="Property.Active" class="form-check"></InputCheckbox>
                             <ValidationMessage For="() => Property.Active"></ValidationMessage>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                     </div>
                     <br />
                     <div class="form-group" style="padding-top:30px; padding-bottom:30px;">
-                        <hr/>
+                        <hr />
                         <h4>Property Images</h4>
                         <InputFile OnChange="HandleFileUpload" multiple></InputFile>
                         <div class="row">
@@ -150,7 +150,7 @@
                             }
                         </div>
                     </div>
-                    <div class="row"> 
+                    <div class="row">
                         <div class="col-2">
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-plus-circle-fill"></i>&nbsp;
@@ -158,7 +158,7 @@
                             </button>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo("/properties"))">
+                            <button type="button" class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo("/properties"))">
                                 <i class="bi bi-arrow-left-circle-fill"></i>&nbsp;
                                 Go back
                             </button>
@@ -167,7 +167,7 @@
                 </div>
             </div>
         </EditForm>
-        
+
     </div>
 </div>
 
@@ -176,6 +176,8 @@
     private readonly DropDownCategoryDTO _selectedCategory = new DropDownCategoryDTO();
     private PropertyImageDTO ImgDto { get; set; } = new PropertyImageDTO();
     public bool FileUploadHasStarted { get; set; } = false;
+    [Parameter]
+    public int? Id { get; set; }
 
     //Obtain categoryList into dropDown
     private IEnumerable<DropDownCategoryDTO> DropDownCategoryDto { get; set; } = new List<DropDownCategoryDTO>();
@@ -183,23 +185,33 @@
     protected override async Task OnInitializedAsync()
     {
         DropDownCategoryDto = await CatRepo.GetDropDownCategories();
+
+        if (Id != null)
+        {
+            Property = await PropRepo.GetPropertyById(Id.Value);
+            if (Property?.Images != null)
+            {
+                Property.ImagesUrl = Property.Images.Select(u => u.PropertyImageUrl).ToList();
+            }
+        }
+
     }
 
 
-    public async Task HandleCreateProperty()
+    public async Task HandleEditProperty()
     {
         var propName = await PropRepo.ExistPropertyName(Property.Name);
-        if(propName != null)
+        if (propName != null)
         {
             await JsRuntime.ToastrError("That property name already exists");
             return;
         }
 
-        Property.CategoryId = _selectedCategory.Id;
-        var createdProperty = await PropRepo.CreateProperty(Property);
-        await AddPropertyImages(createdProperty);
-        await JsRuntime.ToastrSuccess("Property created successfully");
-        NavManager.NavigateTo("/properties");
+        // Property.CategoryId = _selectedCategory.Id;
+        // var updateProperty = await PropRepo.UpdateProperty(Property);
+        // await AddPropertyImages(createdProperty);
+        // await JsRuntime.ToastrSuccess("Property created successfully");
+        // NavManager.NavigateTo("/properties");
     }
 
     public async Task HandleFileUpload(InputFileChangeEventArgs e)
@@ -280,10 +292,10 @@
                 continue;
             }
             ImgDto = new PropertyImageDTO()
-            {
-                PropertyId = prop.Id,
-                PropertyImageUrl = url,
-            };
+                {
+                    PropertyId = prop.Id,
+                    PropertyImageUrl = url,
+                };
             await ImgRepo.CreatePropImage(ImgDto);
         }
     }

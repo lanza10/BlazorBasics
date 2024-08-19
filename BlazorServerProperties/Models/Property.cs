@@ -7,7 +7,7 @@ namespace BlazorServerProperties.Models
     {
         [Key] public int Id { get; set; }
         [Required] public string Name { get; set; }
-        public string Description { get;}
+        [Required] public string Description { get; set; }
         [Required] public int Area { get; set; }
         [Required] public int Rooms { get; set; }
         [Required] public int Bathrooms { get; set; }
