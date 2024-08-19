@@ -44,7 +44,7 @@ namespace BlazorServerProperties.Services
         {
             try
             {
-                var path = $"{_environment.WebRootPath}\\propertiesImages\\{fileName}";
+                var path = $"{_environment.WebRootPath}\\{fileName}";
                 if (File.Exists(path))
                 {
                     File.Delete(path);

@@ -154,7 +154,7 @@
                         <div class="col-2">
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-plus-circle-fill"></i>&nbsp;
-                                Create
+                                Update
                             </button>
                         </div>
                         <div class="col-2">
@@ -176,6 +176,7 @@
     private readonly DropDownCategoryDTO _selectedCategory = new DropDownCategoryDTO();
     private PropertyImageDTO ImgDto { get; set; } = new PropertyImageDTO();
     public bool FileUploadHasStarted { get; set; } = false;
+    private List<string> DeletedImagesName { get; set; } = new List<string>();
     [Parameter]
     public int? Id { get; set; }
 
@@ -189,6 +190,7 @@
         if (Id != null)
         {
             Property = await PropRepo.GetPropertyById(Id.Value);
+            _selectedCategory.Id = Property.CategoryId;
             if (Property?.Images != null)
             {
                 Property.ImagesUrl = Property.Images.Select(u => u.PropertyImageUrl).ToList();
@@ -200,18 +202,25 @@
 
     public async Task HandleEditProperty()
     {
-        var propName = await PropRepo.ExistPropertyName(Property.Name);
-        if (propName != null)
+        Property.CategoryId = _selectedCategory.Id;
+        var updatePropRes = await PropRepo.UpdateProperty(Property.Id, Property);
+        if (Property.ImagesUrl != null && Property.ImagesUrl.Any() || DeletedImagesName != null && DeletedImagesName.Any())
         {
-            await JsRuntime.ToastrError("That property name already exists");
-            return;
+            if (DeletedImagesName != null && DeletedImagesName.Any())
+            {
+                foreach (var deletedImageName in DeletedImagesName)
+                {
+                    var imageName = deletedImageName.Replace($"{NavManager.BaseUri}propertiesImages/", "");
+                    var result = FileUpload.DeleteFile(imageName);
+                    await ImgRepo.DeletePropImageByUrl(deletedImageName);
+                }
+            }
+
+            await AddPropertyImages(updatePropRes);
+            await JsRuntime.ToastrSuccess("Property updated successfully");
+            NavManager.NavigateTo("/properties");
         }
 
-        // Property.CategoryId = _selectedCategory.Id;
-        // var updateProperty = await PropRepo.UpdateProperty(Property);
-        // await AddPropertyImages(createdProperty);
-        // await JsRuntime.ToastrSuccess("Property created successfully");
-        // NavManager.NavigateTo("/properties");
     }
 
     public async Task HandleFileUpload(InputFileChangeEventArgs e)
@@ -271,10 +280,8 @@
         {
             var imgIndex = Property.ImagesUrl.FindIndex(x => x == url);
             var imgName = url.Replace($"{NavManager.BaseUri}propertiesImages/", "");
-            if (Property.Id == 0)
-            {
-                var result = FileUpload.DeleteFile(imgName);
-            }
+            DeletedImagesName ??= new List<string>();
+            DeletedImagesName.Add(url);
             Property.ImagesUrl.RemoveAt(imgIndex);
         }
         catch (Exception ex)

@@ -30,11 +30,23 @@ namespace BlazorServerProperties.Repository
             //    return null;
             //}
             //v2.0
+            //try
+            //{
+            //    var propertiesDto =
+            //        _mapper.Map<IEnumerable<Property>, IEnumerable<PropertyDTO>>(_db.Properties
+            //            .Include(x => x.Images));
+            //    return propertiesDto;
+            //}
+            //catch (Exception ex)
+            //{
+            //    return null;
+            //}
+            //v3.0
             try
             {
                 var propertiesDto =
                     _mapper.Map<IEnumerable<Property>, IEnumerable<PropertyDTO>>(_db.Properties
-                        .Include(x => x.Images));
+                        .Include(x => x.Images).Include(c => c.Category));
                 return propertiesDto;
             }
             catch (Exception ex)

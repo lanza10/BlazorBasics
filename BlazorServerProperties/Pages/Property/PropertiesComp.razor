@@ -3,6 +3,7 @@
 @using Models.DTO
 @using Repository.IRepository
 @inject IPropertyRepository  PropRepo
+@inject ICategoryRepository CatRepo
 @inject IJSRuntime JsRuntime
 
 <h1 class="text-center">Properties</h1>
@@ -31,6 +32,7 @@
                 <th>Parking</th>
                 <th>Price</th>
                 <th>Active</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -49,6 +51,7 @@
                         <td>@prop.Parking</td>
                         <td>@prop.Price</td>
                         <td>@prop.Active</td>
+                        <td>@prop.Category.CategoryName</td>
                         <td>
                             <NavLink href="@($"edit-property/{prop.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
                                 <button class="btn btn-danger" @onclick="() => HandleDeleteProperty(prop.Id)"><i class="bi bi-house-dash-fill"></i>&nbsp; Delete</button>
@@ -69,6 +72,7 @@
 
 @code {
     private IEnumerable<PropertyDTO> PropertiesDto { get; set; } = new List<PropertyDTO>();
+
 
     protected override async Task OnInitializedAsync()
     {
