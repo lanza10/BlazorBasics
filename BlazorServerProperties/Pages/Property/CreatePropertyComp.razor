@@ -197,7 +197,10 @@
 
         Property.CategoryId = _selectedCategory.Id;
         var createdProperty = await PropRepo.CreateProperty(Property);
-        await AddPropertyImages(createdProperty);
+        if (Property.ImagesUrl != null)
+        {
+            await AddPropertyImages(createdProperty);
+        }
         await JsRuntime.ToastrSuccess("Property created successfully");
         NavManager.NavigateTo("/properties");
     }

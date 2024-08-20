@@ -123,6 +123,9 @@ namespace BlazorServerProperties.Repository
             {
                 return 0;
             }
+
+            var propertyImages = await _db.PropertyImages.Where(i => i.PropertyId == id).ToListAsync();
+            _db.PropertyImages.RemoveRange(propertyImages);
             _db.Properties.Remove(prop);
             return await _db.SaveChangesAsync();
 
