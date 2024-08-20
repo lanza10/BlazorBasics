@@ -1,8 +1,46 @@
 ﻿@page "/"
+@using BlazorServerProperties.Models.DTO
+@using BlazorServerProperties.Repository.IRepository
+@inject IPropertyRepository PropRepo
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1 class="text-center">LAST PROPERTIES</h1>
 
-Welcome to your new app.
+<div class="row">
+    @foreach (var prop in PropertiesDto)
+    {
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@prop.Name</h3>
+                </div>
+                <div class="card-body">
+                    @if (prop.Images.Any())
+                    {
+                        @foreach (var img in prop.Images)
+                        {
+                            <img src="@img.PropertyImageUrl" class="img-fluid" alt="Image not found"/>
+                        }
+                    }
+                    else
+                    {
 
+                    }
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code
+{
+    private IEnumerable<PropertyDTO> PropertiesDto { get; set; } = new List<PropertyDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PropertiesDto = await PropRepo.GetAllProperty();
+    }
+}
