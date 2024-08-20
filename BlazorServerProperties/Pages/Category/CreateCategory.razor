@@ -6,7 +6,7 @@
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
 <h1 class="text-center">Categories</h1>
 

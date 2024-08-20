@@ -9,7 +9,7 @@
 @inject NavigationManager NavManager
 @inject IFileUpload FileUpload
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Publisher,Admin")]
 
 <h1 class="text-center">Properties</h1>
 
