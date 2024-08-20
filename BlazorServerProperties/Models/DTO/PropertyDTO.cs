@@ -27,6 +27,7 @@ namespace BlazorServerProperties.Models.DTO
         public double Price { get; set; }
         [Required]
         public bool Active { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }

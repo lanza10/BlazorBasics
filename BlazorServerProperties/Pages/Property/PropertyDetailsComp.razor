@@ -1,0 +1,53 @@
+﻿@page "/property-details/{Id:int}"
+@using BlazorServerProperties.Models.DTO
+@using BlazorServerProperties.Repository.IRepository
+@inject IPropertyRepository PropRepo
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <h2>@PropertyDto.Name</h2>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (PropertyDto.ImagesUrl != null)
+        {
+            <div class="row">
+            @foreach (var img in PropertyDto.ImagesUrl)
+            {
+                <div class="col-4">
+                    <img src="@img" class="img-fluid" alt="Image not found"/>
+                </div>
+            }
+            </div>
+        }
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Description:</strong> @PropertyDto.Description</li>
+            <li class="list-group-item"><strong>Area:</strong>  @PropertyDto.Area</li>
+            <li class="list-group-item"><strong>Rooms amount:</strong>  @PropertyDto.Rooms</li>
+            <li class="list-group-item"><strong>Bathrooms amount:</strong>  @PropertyDto.Bathrooms</li>
+            <li class="list-group-item"><strong>Parking spaces:</strong>  @PropertyDto.Parking</li>
+            <li class="list-group-item"><strong>Price:</strong>  @PropertyDto.Price</li>
+            <li class="list-group-item"><strong>Update date:</strong>  @PropertyDto.UpdateDate</li>
+        </ul>
+    </div>
+    <div class="card-footer">
+        <NavLink href="/" class="btn btn-secondary"><i class="bi bi-arrow-return-left"></i>&nbsp; Go back</NavLink> 
+    </div>
+</div>
+
+            
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private PropertyDTO PropertyDto { get; set; } = new PropertyDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PropertyDto = await PropRepo.GetPropertyById(Id.Value);
+        PropertyDto.ImagesUrl = PropertyDto.Images.Select(i => i.PropertyImageUrl).ToList();
+    }
+
+}
