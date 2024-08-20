@@ -2,8 +2,10 @@
 
 @using BlazorServerProperties.Models.DTO
 @using Repository.IRepository
-@inject ICategoryRepository  categoryRepository
+@inject ICategoryRepository  CatRepo
 @inject IJSRuntime JsRuntime
+
+@attribute [Authorize]
 
 <h1 class="text-center">Categories</h1>
 
@@ -64,7 +66,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CategoriesDto = await categoryRepository.GetAllCategory();
+        CategoriesDto = await CatRepo.GetAllCategory();
     }
 
     public async void HandleDeleteCategory(int id)
@@ -77,11 +79,11 @@
         IsProcessing = true;
         if (confirmed && DeleteCategoryId != null)
         {
-            var prop = await categoryRepository.GetCategoryById(DeleteCategoryId.Value);
+            var prop = await CatRepo.GetCategoryById(DeleteCategoryId.Value);
 
-            await categoryRepository.DeleteCategory(DeleteCategoryId.Value);
+            await CatRepo.DeleteCategory(DeleteCategoryId.Value);
             await JsRuntime.ToastrSuccess("Category deleted successfully");
-            CategoriesDto = await categoryRepository.GetAllCategory();
+            CategoriesDto = await CatRepo.GetAllCategory();
         }
         await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
         IsProcessing = false;
