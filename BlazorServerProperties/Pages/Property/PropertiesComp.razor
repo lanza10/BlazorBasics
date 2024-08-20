@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<DeleteConfirmation ConfirmationChange="ClickDeleteModal"></DeleteConfirmation>
+<DeleteConfirmation ConfirmationChange="ClickDeleteModal" ParentIsProcessing="IsProcessing"></DeleteConfirmation>
 
 @code {
     private IEnumerable<PropertyDTO> PropertiesDto { get; set; } = new List<PropertyDTO>();
