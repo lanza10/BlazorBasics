@@ -7,5 +7,6 @@ namespace BlogApi.Data
     {
         //Add data models
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

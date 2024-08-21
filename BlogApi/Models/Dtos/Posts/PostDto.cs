@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogApi.Models.Dtos
+namespace BlogApi.Models.Dtos.Posts
 {
-    public class PostCreateDto
+    public class PostDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Post title is mandatory")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Post description is mandatory")]
@@ -12,5 +13,6 @@ namespace BlogApi.Models.Dtos
         [Required(ErrorMessage = "Post tags is mandatory")]
         public string Tags { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime UpdateDate { get; set; }
     }
 }

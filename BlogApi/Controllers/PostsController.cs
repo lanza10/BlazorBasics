@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using AutoMapper;
 using BlogApi.Models;
-using BlogApi.Models.Dtos;
+using BlogApi.Models.Dtos.Posts;
 using BlogApi.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ namespace BlogApi.Controllers
 
             return Ok(postsDtoList);
         }
-        [HttpGet("{id:int}",Name = "")]
+        [HttpGet("{id:int}",Name = "GetPost")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +75,7 @@ namespace BlogApi.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetPost", new { postId = post.Id }, post);
+            return CreatedAtRoute("GetPost", new { id = post.Id }, post);
         }
         [HttpPatch("{postId:int}", Name = "UpdatePatchPost")]
         [ProducesResponseType(201, Type = typeof(PostCreateDto))]
@@ -113,7 +113,6 @@ namespace BlogApi.Controllers
         }
 
         [HttpDelete("{id:int}", Name = "DeletePost")]
-        [ProducesResponseType(201, Type = typeof(PostCreateDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
