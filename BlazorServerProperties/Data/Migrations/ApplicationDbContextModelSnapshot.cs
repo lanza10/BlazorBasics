@@ -45,7 +45,7 @@ namespace BlazorServerProperties.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("BlazorServerProperties.Models.Property", b =>
@@ -95,7 +95,7 @@ namespace BlazorServerProperties.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("BlazorServerProperties.Models.PropertyImage", b =>
@@ -116,7 +116,7 @@ namespace BlazorServerProperties.Data.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyImages");
+                    b.ToTable("PropertyImages", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -30,6 +30,9 @@ builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IPropertyImageRepository, PropertyImageRepository>();
 builder.Services.AddScoped<IFileUpload, FileUpload>();
 
+//Data initializer
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +51,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+//Method that runs de Data initialization
+DataInitialization();
+
 app.UseRouting();
 
 app.UseAuthorization();
@@ -57,3 +63,11 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+//Method that runs de Data initialization
+void DataInitialization()
+{
+    using var scope = app.Services.CreateScope();
+    var dbInit = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInit.Initialize();
+}
