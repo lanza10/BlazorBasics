@@ -1,0 +1,75 @@
+﻿@page "/posts"
+@using BlazorWasmBlogClient.Models
+@using BlazorWasmBlogClient.Services.IServices
+@inject IPostService PostService
+
+<h1 class="text-center">Posts</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h4 class="card-title">Posts List</h4>
+            </div>
+            <div class="col-3 offset-2">
+                <NavLink href="/create-post" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp; New Post</NavLink>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Tags</th>
+                <th>Image</th>
+                <th>Creation Date</th>
+                <th>Last Updated Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                @if (Posts.Any())
+                {
+                    @foreach (var p in Posts)
+                    {
+                        <tr>
+                            <td>@p.Id</td>
+                            <td>@p.Title</td>
+                            <td>@p.Description</td>
+                            <td>@p.Tags</td>
+                            <td><img src="@p.ImagePath" alt="No image"/></td>
+                            <td>@p.CreationDate</td>
+                            <td>@p.UpdateDate</td>
+                            <td>
+                                <NavLink href="@($"/edit-post/{p.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
+                                <button @onclick="() => HandleDeletePost(p.Id)" class="btn btn-danger"><i class="bi bi-trash-fill"></i>&nbsp; Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr colspan="5">There are no posts</tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    public IEnumerable<Post> Posts { get; set; } = new List<Post>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await PostService.GetPosts();
+    }
+
+    public async void HandleDeletePost(int id)
+    {
+
+    }
+
+}
