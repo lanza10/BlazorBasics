@@ -3,6 +3,7 @@ using AutoMapper;
 using BlogApi.Models;
 using BlogApi.Models.Dtos.Posts;
 using BlogApi.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace BlogApi.Controllers
     [ApiController]
     public class PostsController(IPostRepository postRepo, IMapper mapper) : ControllerBase
     {
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -27,6 +29,7 @@ namespace BlogApi.Controllers
 
             return Ok(postsDtoList);
         }
+        [AllowAnonymous]
         [HttpGet("{id:int}",Name = "GetPost")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,6 +46,7 @@ namespace BlogApi.Controllers
             return Ok(postDto);
         }
 
+        //[Authorize]
         [HttpPost]
         [ProducesResponseType(201,Type = typeof(PostCreateDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -77,6 +81,8 @@ namespace BlogApi.Controllers
 
             return CreatedAtRoute("GetPost", new { id = post.Id }, post);
         }
+
+        //[Authorize]
         [HttpPatch("{postId:int}", Name = "UpdatePatchPost")]
         [ProducesResponseType(201, Type = typeof(PostCreateDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -112,6 +118,7 @@ namespace BlogApi.Controllers
             return NoContent();
         }
 
+        //[Authorize]
         [HttpDelete("{id:int}", Name = "DeletePost")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

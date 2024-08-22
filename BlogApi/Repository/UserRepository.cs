@@ -10,32 +10,31 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BlogApi.Repository
 {
-    public class UserRepository(ApplicationDbContext db) : IUserRepository
+    public class UserRepository(ApplicationDbContext db, IConfiguration config) : IUserRepository
     {
-        private readonly ApplicationDbContext _db = db;
-        private string _secretKey;
+        private readonly string _secretKey = config.GetValue<string>("ApiSettings:Secret");
 
         public ICollection<User> GetUsers()
         {
-            return _db.Users.OrderBy(u => u.Id).ToList();
+            return db.Users.OrderBy(u => u.Id).ToList();
         }
 
         public User GetUser(int id)
         {
-            return _db.Users.FirstOrDefault(u => u.Id == id);
+            return db.Users.FirstOrDefault(u => u.Id == id);
         }
 
         public bool IsUniqueUser(string username)
         {
-            var dbUser = _db.Users.FirstOrDefault(u=> u.Username == username);
+            var dbUser = db.Users.FirstOrDefault(u=> u.Username == username);
             return dbUser == null;
         }
 
         public async Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto)
         {
             var encryptedPassword = GetMd5(userLoginDto.Password);
-            var user = _db.Users.FirstOrDefault(
-                u => u.Username.Equals(userLoginDto.Username, StringComparison.CurrentCultureIgnoreCase)
+            var user = db.Users.FirstOrDefault(
+                u => u.Username.ToLower() == userLoginDto.Username.ToLower()
                 && u.Password == encryptedPassword
                 );
             //If user exists with that username anda password
@@ -73,9 +72,22 @@ namespace BlogApi.Repository
 
        
 
-        public Task<User> Register(UserRegisterDto userRegisterDto)
+        public async Task<User> Register(UserRegisterDto userRegisterDto)
         {
-            throw new NotImplementedException();
+            var encryptedPassword = GetMd5(userRegisterDto.Password);
+
+            var user = new User()
+            {
+                Username = userRegisterDto.Username,
+                Email = userRegisterDto.Email,
+                Name = userRegisterDto.Name,
+                Password = userRegisterDto.Password
+            };
+
+            db.Users.Add(user);
+            user.Password = encryptedPassword;
+            await db.SaveChangesAsync();
+            return user;
         }
 
         // Method to encrypt password using MD5 for Login and Register
