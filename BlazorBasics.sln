@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCRUD", "BlazorCRUD\Bl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerProperties", "BlazorServerProperties\BlazorServerProperties.csproj", "{91A31EA7-A242-4738-B65E-129C6FC21BE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApi", "BlogApi\BlogApi.csproj", "{7E694671-EDD6-4A22-B8AB-F9D776427B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApi", "BlogApi\BlogApi.csproj", "{7E694671-EDD6-4A22-B8AB-F9D776427B3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazorServerProjects", "BlazorServerProjects", "{4E452E4F-7448-4DEF-B93C-414777ACE7A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmBlogClient", "BlazorWasmBlogClient\BlazorWasmBlogClient.csproj", "{EC5529C5-2116-4766-8E90-4D549F1BE44A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{7E694671-EDD6-4A22-B8AB-F9D776427B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E694671-EDD6-4A22-B8AB-F9D776427B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E694671-EDD6-4A22-B8AB-F9D776427B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC5529C5-2116-4766-8E90-4D549F1BE44A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5529C5-2116-4766-8E90-4D549F1BE44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5529C5-2116-4766-8E90-4D549F1BE44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5529C5-2116-4766-8E90-4D549F1BE44A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
