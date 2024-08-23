@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BlazorWasmBlogClient.Pages.Authentication
+namespace BlazorWasmBlogClient.Pages
 {
     public partial class RedirectToLogin
     {
@@ -35,5 +35,5 @@ namespace BlazorWasmBlogClient.Pages.Authentication
             }
         }
     }
-    
+
 }

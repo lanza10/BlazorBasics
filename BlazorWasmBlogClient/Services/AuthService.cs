@@ -21,7 +21,7 @@ namespace BlazorWasmBlogClient.Services
         {
             var content = JsonConvert.SerializeObject(userRegister);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"{Init.BaseUrlApi}api/user/register", bodyContent);
+            var response = await client.PostAsync($"{Init.BaseUrlApi}api/users/register", bodyContent);
             var contentTemp = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RegisterResponse>(contentTemp);
             return response.IsSuccessStatusCode ? new RegisterResponse { CorrectRegister = true } : result;
@@ -31,17 +31,17 @@ namespace BlazorWasmBlogClient.Services
         {
             var content = JsonConvert.SerializeObject(userLogin);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"{Init.BaseUrlApi}api/user/login",bodyContent);
+            var response = await client.PostAsync($"{Init.BaseUrlApi}api/users/login",bodyContent);
             var contentTemp = await response.Content.ReadAsStringAsync();
-            var result = (JsonObject)JsonConvert.DeserializeObject(contentTemp);
+            var result = (JObject)JsonConvert.DeserializeObject(contentTemp);
 
             if (!response.IsSuccessStatusCode)
             {
                 return new LoginResponse { IsSuccess = false };
             }
 
-            var token = result["result"]["token"].GetValue<string>();
-            var user = result["result"]["user"].GetValue<string>();
+            var token = result["result"]["token"].Value<string>();
+            var user = result["result"]["user"]["username"].Value<string>();
             await localStorageService.SetItemAsync(Init.LocalToken, token);
             await localStorageService.SetItemAsync(Init.LocalUserData, user);
             ((AuthStateProvider)authStateProv).NotifyUserLogged(token);
