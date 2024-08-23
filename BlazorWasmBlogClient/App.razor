@@ -1,12 +1,21 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
+    
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <p>Please, wait while register is being authorized</p>
+            </Authorizing>
+            <NotAuthorized>
+                <TBlazorWasmBlogClient.Pages.Authentication.RedirectToLogin></TBlazorWasmBlogClient.Pages.Authentication.RedirectToLogin>
+            </NotAuthorized>
+        </AuthorizeRouteView>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+        <CascadingAuthenticationState>
         <LayoutView Layout="@typeof(MainLayout)">
             <p role="alert">Error, there's nothing at this address.</p>
         </LayoutView>
+        </CascadingAuthenticationState>
     </NotFound>
+
 </Router>
