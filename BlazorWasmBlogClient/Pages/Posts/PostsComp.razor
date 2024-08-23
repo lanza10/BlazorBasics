@@ -2,6 +2,7 @@
 @using BlazorWasmBlogClient.Models
 @using BlazorWasmBlogClient.Services.IServices
 @inject IPostService PostService
+@inject IJSRuntime JsRuntime
 
 <h1 class="text-center">Posts</h1>
 
@@ -31,45 +32,63 @@
             </tr>
             </thead>
             <tbody>
-                @if (Posts.Any())
+            @if (Posts.Any())
+            {
+                @foreach (var p in Posts)
                 {
-                    @foreach (var p in Posts)
-                    {
-                        <tr>
-                            <td>@p.Id</td>
-                            <td>@p.Title</td>
-                            <td>@p.Description</td>
-                            <td>@p.Tags</td>
-                            <td><img src="@p.ImagePath" alt="No image"/></td>
-                            <td>@p.CreationDate</td>
-                            <td>@p.UpdateDate</td>
-                            <td>
-                                <NavLink href="@($"/edit-post/{p.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
-                                <button @onclick="() => HandleDeletePost(p.Id)" class="btn btn-danger"><i class="bi bi-trash-fill"></i>&nbsp; Delete</button>
-                            </td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>@p.Id</td>
+                        <td>@p.Title</td>
+                        <td>@p.Description</td>
+                        <td>@p.Tags</td>
+                        <td><img src="@p.ImagePath" alt="No image" class="img-fluid" style="width:100px"/></td>
+                        <td>@p.CreationDate</td>
+                        <td>@p.UpdateDate</td>
+                        <td>
+                            <NavLink href="@($"/edit-post/{p.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Edit</NavLink>
+                            <button @onclick="() => HandleDeletePost(p.Id)" class="btn btn-danger"><i class="bi bi-trash-fill"></i>&nbsp; Delete</button>
+                        </td>
+                    </tr>
                 }
-                else
-                {
-                    <tr colspan="5">There are no posts</tr>
-                }
+            }
+            else
+            {
+                <tr colspan="5">There are no posts / Loading...</tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
 
+<DeleteConfirm ParentIsProcessing="IsProcessing" ConfirmationChange="ClickConfirmDelete"></DeleteConfirm>
+
 @code {
     public IEnumerable<Post> Posts { get; set; } = new List<Post>();
+    private bool IsProcessing { get; set; } = false;
+    private int? IdPostDelete { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
         Posts = await PostService.GetPosts();
     }
 
-    public async void HandleDeletePost(int id)
+    public async Task HandleDeletePost(int id)
     {
+        IdPostDelete = id;
+        await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
 
+    public async Task ClickConfirmDelete(bool confirmed)
+    {
+        IsProcessing = true;
+        if (confirmed && IdPostDelete != null)
+        {
+            var res = await PostService.DeletePost(IdPostDelete.Value);
+            await JsRuntime.ToastrSuccess("Post deleted!");
+            Posts = await PostService.GetPosts();
+        }
+        await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
     }
 
 }

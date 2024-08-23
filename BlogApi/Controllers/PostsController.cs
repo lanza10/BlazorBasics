@@ -102,12 +102,6 @@ namespace BlogApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (postRepo.PostExists(postUpdateDto.Title))
-            {
-                ModelState.AddModelError("", "A post with that title already exists");
-                return StatusCode(404, ModelState);
-            }
-
             var post = mapper.Map<Post>(postUpdateDto);
             if (!postRepo.UpdatePost(post))
             {

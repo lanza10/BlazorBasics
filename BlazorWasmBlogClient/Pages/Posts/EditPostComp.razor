@@ -1,0 +1,132 @@
+﻿@page "/edit-post/{Id:int}"
+@using System.Net.Http.Headers
+@using BlazorWasmBlogClient.Models
+@using BlazorWasmBlogClient.Services.IServices
+@inject IPostService PostService
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavManager
+
+<h1 class="text-center">Edit Post</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h4 class="card-title">Update Post</h4>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <EditForm Model="EditPost" OnValidSubmit="() => HandleEditPost()">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <ValidationSummary></ValidationSummary>
+            <div class="container">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Title:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="EditPost.Title" class="form-control" placeholder="Insert Title"></InputText>
+                            <ValidationMessage For="() => EditPost.Title"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="EditPost.Description" class="form-control" placeholder="Insert Description"></InputText>
+                            <ValidationMessage For="() => EditPost.Description"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Tags:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="EditPost.Tags" class="form-control" placeholder="Insert tags separated by comma"></InputText>
+                            <ValidationMessage For="() => EditPost.Tags"></ValidationMessage>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>Post Image:</h4>
+                            <div class="post-image mb-3" 
+                            style="background: url('@EditPost.ImagePath'); width:300px; height: 169px; background-size:cover;">
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <h4>Update Post Image:</h4>
+                            <InputFile OnChange="@HandleUploadFile"></InputFile>
+                            <br />
+                            @if (PostImage != null)
+                            {
+                                <div>
+                                    <img src="@PostImage" style="width:300px" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Update Post</button>
+                        </div>
+                        <div class="col-6">
+                            <NavLink href="posts" class="btn btn-secondary"><i class="bi bi-arrow-left-circle-fill"></i>&nbsp; Go back</NavLink>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Post EditPost { get; set; } = new Post();
+    public string PostImage { get; set; }
+    public EventCallback<string> OnChange { get; set; }
+    [Parameter]
+    public int? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EditPost = await PostService.GetPost(Id.Value);
+    }
+
+    private async void HandleEditPost()
+    {
+        if(PostImage != null)
+        {
+            EditPost.ImagePath = PostImage;
+        }
+
+        var resultPost = await PostService.UpdatePost(Id.Value, EditPost);
+
+        await JsRuntime.ToastrSuccess("Post updated!");
+
+        NavManager.NavigateTo("/posts");
+    }
+
+    private async Task HandleUploadFile(InputFileChangeEventArgs e)
+    {
+        var fileImage = e.File;
+        if (fileImage != null)
+        {
+            var resizedFile = await fileImage.RequestImageFileAsync("image/png", 1000, 700);
+            await using var ms = resizedFile.OpenReadStream(resizedFile.Size);
+            var content = new MultipartFormDataContent();
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+            content.Add(new StreamContent(ms, Convert.ToInt32(resizedFile.Size)), "image", fileImage.Name);
+            PostImage = await PostService.UploadImage(content);
+            await OnChange.InvokeAsync(PostImage);
+        }
+    }
+
+}

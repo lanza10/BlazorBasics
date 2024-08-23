@@ -68,7 +68,7 @@ namespace BlazorWasmBlogClient.Services
         {
             var content = JsonConvert.SerializeObject(p);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync($"{Init.BaseUrlApi}api/posts/{id}", bodyContent);
+            var response = await _client.PatchAsync($"{Init.BaseUrlApi}api/posts/{id}", bodyContent);
             if (response.IsSuccessStatusCode)
             {
                 var contentTemp = await response.Content.ReadAsStringAsync();
@@ -85,7 +85,7 @@ namespace BlazorWasmBlogClient.Services
 
         public async Task<bool> DeletePost(int id)
         {
-            var response = await _client.GetAsync($"{Init.BaseUrlApi}api/posts/{id}");
+            var response = await _client.DeleteAsync($"{Init.BaseUrlApi}api/posts/{id}");
             if (response.IsSuccessStatusCode)
             {
                 return true;
@@ -98,9 +98,17 @@ namespace BlazorWasmBlogClient.Services
             }
         }
 
-        public Task<string> UploadImage(MultipartFormDataContent content)
+        public async Task<string> UploadImage(MultipartFormDataContent content)
         {
-            throw new NotImplementedException();
+            var postResult = await _client.PostAsync($"{Init.BaseUrlApi}api/upload", content);
+            var postContent = await postResult.Content.ReadAsStringAsync();
+            if (!postResult.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(postContent);
+            }
+
+            var postImage = Path.Combine($"{Init.BaseUrlApi}", postContent);
+            return postImage;
         }
     }
 }
