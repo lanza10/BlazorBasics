@@ -1,25 +1,39 @@
 ﻿@page "/"
-
-@inject IJSRuntime JsRuntime
+@using System.Net
+@using BlazorWasmBlogClient.Models
+@using BlazorWasmBlogClient.Services.IServices
+@inject IPostService PostService
 
 <PageTitle>Home</PageTitle>
 
 <h1 class="text-center">Last Posts</h1>
-@* <div class="row mt-4">
-    <div class="col-4">
-        <button class="btn btn-success" @onclick="DemoSuccess">Demo Toastr Success</button>
-        <button class="btn btn-danger" @onclick="DemoError">Demo Toastr Error</button>
-    </div>
-</div> *@
+
+<div class="row">
+    @foreach (var p in Posts)
+    {
+        <div class="col-3 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">@p.Title</h3>
+                </div>
+                <div class="card-body">
+                    <img src="@p.ImagePath" class="img-fluid" alt="No image"/>
+                </div>
+                <div class="card-footer">
+                    <NavLink href="@($"post-details/{p.Id}")">More info...</NavLink>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @code
 {
-    // private async Task DemoSuccess()
-    // {
-    //     await JsRuntime.ToastrSuccess("Task completed!");
-    // }
-    // private async Task DemoError()
-    // {
-    //     await JsRuntime.ToastrError("Error, task uncompleted!");
-    // }
+    private IEnumerable<Post> Posts { get; set; } = new List<Post>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await PostService.GetPosts();
+    }
+
 }

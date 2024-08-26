@@ -46,7 +46,7 @@ namespace BlogApi.Controllers
             return Ok(postDto);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(201,Type = typeof(PostCreateDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -82,7 +82,7 @@ namespace BlogApi.Controllers
             return CreatedAtRoute("GetPost", new { id = post.Id }, post);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPatch("{postId:int}", Name = "UpdatePatchPost")]
         [ProducesResponseType(201, Type = typeof(PostCreateDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -112,7 +112,7 @@ namespace BlogApi.Controllers
             return NoContent();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:int}", Name = "DeletePost")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

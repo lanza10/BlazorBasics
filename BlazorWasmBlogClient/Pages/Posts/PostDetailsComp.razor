@@ -1,0 +1,42 @@
+﻿@page "/post-details/{Id:int}"
+@using BlazorWasmBlogClient.Models
+@using BlazorWasmBlogClient.Services.IServices
+@inject IPostService PostService
+
+<div class="col-8 offset-2 mt-5">
+    <div class="card">
+        <img src="@Post.ImagePath" class="card-img-top img-fluid" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Post.Title</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@Post.Description</li>
+                <li class="list-group-item">Tags: @Post.Tags</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+                @if (Post.UpdateDate != DateTime.MinValue)
+                {
+                    <p class="card-text">Posted on: @Post.CreationDate   Updated on: @Post.UpdateDate</p>
+                }
+                else
+                {
+                    <p class="card-text">Posted on: @Post.CreationDate</p>
+                }
+            <NavLink class="btn btn-secondary" href="/">Go back</NavLink>
+            </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public int? Id {get; set;}
+
+    private Post Post { get; set; } = new Post();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Post = await PostService.GetPost(Id.Value);
+    }
+
+
+}

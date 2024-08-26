@@ -1,8 +1,10 @@
 ﻿@page "/posts"
 @using BlazorWasmBlogClient.Models
 @using BlazorWasmBlogClient.Services.IServices
+@using Microsoft.AspNetCore.Authorization
 @inject IPostService PostService
 @inject IJSRuntime JsRuntime
+@attribute [Authorize]
 
 <h1 class="text-center">Posts</h1>
 

@@ -2,9 +2,11 @@
 @using System.Net.Http.Headers
 @using BlazorWasmBlogClient.Models
 @using BlazorWasmBlogClient.Services.IServices
+@using Microsoft.AspNetCore.Authorization
 @inject IPostService PostService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavManager
+@attribute [Authorize]
 
 <h1 class="text-center">Create Post</h1>
 
