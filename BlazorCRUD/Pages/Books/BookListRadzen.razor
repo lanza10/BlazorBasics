@@ -1,0 +1,99 @@
+﻿@page "/books-radzen"
+@using BlazorCRUD.Models
+@using BlazorCRUD.Repository
+@inject IRepository repo
+
+<h1>CRUD with Blazor Server and MSsqlLocalDB</h1>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="4" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@_bookList" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+    <Columns>
+        <RadzenDataGridColumn TItem="Book" Property="Id" Filterable="false" Title="Id" Frozen="true" Width="10px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Book" Property="Title" Title="Title" Frozen="true" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="Description" Title="Description" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="Author" Title="Author" Width="200px" />
+        <RadzenDataGridColumn TItem="Book" Property="Pages" Title="Pages" Width="120px" />
+        <RadzenDataGridColumn TItem="Book" Property="Price" Title="Price" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="CreationDate" Title="Creation Date" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="Id">
+            <Template Context="data">
+                <a href="edit-book/@data.Id" class="btn btn-success btn-sm">
+                    <span class="oi oi-plus" aria-hidden="true"></span>
+                    Edit
+                </a>
+                <button @onclick="() => DeleteBook(data.Id)" class="btn btn-danger btn.sm">
+                    <span class="oi oi-delete" aria-hidden="true"></span>
+                    Delete
+                </button>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@* <div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-black">
+                    Book List
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Price</th>
+                <th>Creation Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var book in _bookList)
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Title</td>
+                    <td>@book.Description</td>
+                    <td>@book.Author</td>
+                    <td>@book.Pages</td>
+                    <td>@book.Price</td>
+                    <td>@book.CreationDate</td>
+                    <td>
+                        <a href="edit-book/@book.Id" class="btn btn-success btn-sm">
+                            <span class="oi oi-plus" aria-hidden="true"></span>
+                            Edit
+                        </a>
+                        <button @onclick="() => DeleteBook(book.Id)" class="btn btn-danger btn.sm">
+                            <span class="oi oi-delete" aria-hidden="true"></span>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div> *@
+
+@code {
+    private List<Book> _bookList = new List<Book>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookList = await repo.GetBooks();
+    }
+
+    private async Task DeleteBook(int id)
+    {
+        await repo.DeleteBook(id);
+        //Update bookList
+        _bookList = await repo.GetBooks();
+    }
+}
