@@ -94,17 +94,12 @@ a, .btn-link {
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
 }
 
-    .loading-progress-text:after {
-        content: var(--blazor-load-percentage-text, "Loading");
-    }
-
-code {
-    color: #c02d76;
+.loading-progress-text:after {
+   content: var(--blazor-load-percentage-text, "Loading");
 }
-
 .header-image {
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url('../images/headerImage.jpg') !important;
+    background-image: url('../images/header-image.jpg');
     background-size: cover;
 }
